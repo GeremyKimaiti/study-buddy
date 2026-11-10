@@ -1,4 +1,4 @@
-import json, base64, requests, streamlit as st
+import json, base64, time, requests, streamlit as st
 import streamlit.components.v1 as components
 from pypdf import PdfReader
 from supabase import create_client
@@ -24,14 +24,25 @@ def sb():
     return create_client(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
 
 def gemini(parts, json_out=True):
-    model = st.secrets.get("GEMINI_MODEL", "gemini-2.5-flash")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+    primary = st.secrets.get("GEMINI_MODEL", "gemini-3.8-flash")
+    models = [primary] + [m for m in ("gemini-3.8-flash", "gemini-3.5-flash-lite") if m != primary]
     body = {"contents":[{"parts":parts}]}
     if json_out: body["generationConfig"] = {"responseMimeType":"application/json"}
-    r = requests.post(url, headers={"x-goog-api-key":st.secrets["GEMINI_API_KEY"]}, json=body, timeout=90)
-    r.raise_for_status()
-    txt = r.json()["candidates"][0]["content"]["parts"][0]["text"]
-    return json.loads(txt) if json_out else txt
+    last = "no response"
+    for attempt in range(3):
+        for model in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+            try:
+                r = requests.post(url, headers={"x-goog-api-key":st.secrets["GEMINI_API_KEY"]}, json=body, timeout=90)
+            except requests.RequestException as e:
+                last = str(e); continue
+            if r.status_code in (404, 429, 500, 502, 503, 504):
+                last = f"{r.status_code} from {model}"; continue
+            r.raise_for_status()
+            txt = r.json()["candidates"][0]["content"]["parts"][0]["text"]
+            return json.loads(txt) if json_out else txt
+        time.sleep(2 * (attempt + 1))
+    raise RuntimeError(f"Gemini is busy, try again shortly ({last})")
 
 def timer(seconds, label):
     components.html(f"""<div style='font:700 40px sans-serif;text-align:center'>{label}: <span id=t></span></div>
