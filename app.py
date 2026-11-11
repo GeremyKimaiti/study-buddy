@@ -33,41 +33,41 @@ STYLES = [
 ]
 
 PALETTE = {
-    False: dict(bg="#F4F5FB", card="#FFFFFF", text="#1B1F2A", muted="#6B7280", border="#E3E6F0", accent="#6C5CE7", accent2="#00B8A9", soft="#EEF0FF"),
-    True: dict(bg="#0E1016", card="#171A23", text="#ECEEF3", muted="#9AA1B2", border="#2A2F3D", accent="#8B7CFF", accent2="#2DD4BF", soft="#1F2333"),
+    False: dict(bg="#FFFFFF", card="#F6F8FA", text="#1F2328", muted="#656D76", border="#D0D7DE", accent="#0969DA", accent2="#1F883D", soft="#EAEEF2"),
+    True: dict(bg="#0D1117", card="#161B22", text="#E6EDF3", muted="#8B949E", border="#30363D", accent="#2F81F7", accent2="#238636", soft="#21262D"),
 }
 
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-html, body, .stApp { font-family: 'Inter', sans-serif; }
+html, body, .stApp { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
 .stApp { background: var(--bg); }
-header[data-testid="stHeader"] { background: transparent; }
-.block-container { padding-top: 2rem; max-width: 1100px; }
+header[data-testid="stHeader"] { background: var(--bg); border-bottom: 1px solid var(--border); }
+.block-container { padding-top: 2rem; max-width: 1012px; }
 [data-testid="stSidebar"] { background: var(--card); border-right: 1px solid var(--border); }
 .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp li, .stApp label, .stApp [data-testid="stMarkdownContainer"], .stApp [data-testid="stWidgetLabel"] p { color: var(--text); }
 [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color: var(--muted); }
-div[data-baseweb="input"], div[data-baseweb="textarea"], div[data-baseweb="select"] > div { background: var(--card); border-color: var(--border); border-radius: 12px; }
-.stTextInput input, .stTextArea textarea, .stNumberInput input { background: var(--card); color: var(--text); }
+div[data-baseweb="input"], div[data-baseweb="textarea"], div[data-baseweb="select"] > div { background: var(--bg); border-color: var(--border); border-radius: 6px; }
+.stTextInput input, .stTextArea textarea, .stNumberInput input { background: var(--bg); color: var(--text); }
 div[data-baseweb="popover"] > div, div[data-baseweb="popover"] ul { background: var(--card); }
 div[data-baseweb="popover"] li, div[data-baseweb="select"] div { color: var(--text); }
-.stButton > button, .stFormSubmitButton > button { border-radius: 12px; border: 1px solid var(--border); background: var(--card); font-weight: 600; transition: all .15s ease; }
-.stButton > button:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 6px 18px rgba(108,92,231,.25); }
-.stButton > button[kind="primary"], .stButton > button[data-testid="stBaseButton-primary"] { background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; }
+.stButton > button, .stFormSubmitButton > button { border-radius: 6px; border: 1px solid var(--border); background: var(--card); font-weight: 600; font-size: 14px; transition: background .1s ease, border-color .1s ease; }
+.stButton > button:hover { background: var(--soft); border-color: var(--muted); }
+.stButton > button[kind="primary"], .stButton > button[data-testid="stBaseButton-primary"] { background: var(--accent2); border: 1px solid rgba(31,35,40,.15); }
+.stButton > button[kind="primary"]:hover, .stButton > button[data-testid="stBaseButton-primary"]:hover { background: var(--accent2); filter: brightness(1.1); }
 .stButton > button[kind="primary"] p, .stButton > button[data-testid="stBaseButton-primary"] p { color: #fff; }
-[data-testid="stSidebar"] [role="radiogroup"] label { padding: 8px 12px; border-radius: 10px; transition: background .15s ease; }
+[data-testid="stSidebar"] [role="radiogroup"] label { padding: 6px 10px; border-radius: 6px; transition: background .1s ease; }
 [data-testid="stSidebar"] [role="radiogroup"] label:hover { background: var(--soft); }
-[data-testid="stMetric"] { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; }
+[data-testid="stMetric"] { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 14px 18px; }
 [data-testid="stMetricValue"], [data-testid="stMetricLabel"] { color: var(--text); }
-[data-testid="stFileUploaderDropzone"] { background: var(--card); border: 2px dashed var(--accent); border-radius: 14px; }
+[data-testid="stFileUploaderDropzone"] { background: var(--card); border: 1px dashed var(--border); border-radius: 6px; }
 [data-testid="stFileUploaderDropzone"] span, [data-testid="stFileUploaderDropzone"] small { color: var(--text); }
-[data-testid="stVerticalBlockBorderWrapper"] { border-radius: 16px; border-color: var(--border); }
-[data-testid="stAlert"] { border-radius: 12px; }
-.stProgress > div > div > div > div { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-.stApp .hero { padding: 28px 32px; border-radius: 20px; background: linear-gradient(135deg, var(--accent), var(--accent2)); margin-bottom: 20px; box-shadow: 0 10px 30px rgba(108,92,231,.25); }
-.stApp .hero h1 { color: #fff; margin: 0; font-size: 2rem; }
-.stApp .hero p { color: rgba(255,255,255,.92); margin: 6px 0 0; }
-.stApp .hero .chip { display: inline-block; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.22); color: #fff; font-size: .8rem; margin: 12px 8px 0 0; }
+[data-testid="stVerticalBlockBorderWrapper"] { border-radius: 6px; border-color: var(--border); }
+[data-testid="stAlert"] { border-radius: 6px; }
+.stProgress > div > div > div > div { background: var(--accent2); }
+.stApp .hero { padding: 24px 28px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); margin-bottom: 20px; }
+.stApp .hero h1 { color: var(--text); margin: 0; font-size: 1.5rem; font-weight: 600; }
+.stApp .hero p { color: var(--muted); margin: 6px 0 0; }
+.stApp .hero .chip { display: inline-block; padding: 0 10px; line-height: 22px; border-radius: 2em; border: 1px solid var(--accent); color: var(--accent); font-size: 12px; font-weight: 500; margin: 12px 8px 0 0; }
 </style>
 """
 
@@ -176,10 +176,10 @@ def generate(parts, json_out=True, creative=False):
 
 def timer(seconds, label):
     p = PALETTE[bool(st.session_state.get("dark"))]
-    components.html(f"""<div style="font-family:Inter,sans-serif;text-align:center;color:{p['text']};background:{p['card']};border:1px solid {p['border']};border-radius:16px;padding:14px 10px">
-    <div style="font-size:13px;color:{p['muted']};letter-spacing:.1em;text-transform:uppercase">{label}</div>
-    <div id="t" style="font-size:44px;font-weight:700;color:{p['accent']}"></div>
-    <div style="height:6px;background:{p['border']};border-radius:99px;overflow:hidden;margin-top:6px"><div id="b" style="height:100%;width:100%;background:{p['accent']}"></div></div></div>
+    components.html(f"""<div style="font-family:-apple-system,'Segoe UI',Helvetica,sans-serif;text-align:center;color:{p['text']};background:{p['card']};border:1px solid {p['border']};border-radius:6px;padding:14px 10px">
+    <div style="font-size:12px;color:{p['muted']};letter-spacing:.08em;text-transform:uppercase">{label}</div>
+    <div id="t" style="font-size:44px;font-weight:600;color:{p['text']}"></div>
+    <div style="height:6px;background:{p['border']};border-radius:99px;overflow:hidden;margin-top:6px"><div id="b" style="height:100%;width:100%;background:{p['accent2']}"></div></div></div>
     <script>const total={seconds};let s=total;const e=document.getElementById('t'),b=document.getElementById('b');
     const f=()=>{{e.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');b.style.width=(s/total*100)+'%';}};f();
     const i=setInterval(()=>{{s--;f();if(s<=0){{clearInterval(i);e.textContent="Time's up!";}}}},1000);</script>""", height=150)
@@ -240,6 +240,7 @@ def login():
 
 def get_material():
     st.subheader("1. Your material")
+    topic = st.text_input("What is this about?", placeholder="e.g. Causes of World War I, or Chapter 4: Photosynthesis", help="Telling the AI the topic keeps the questions focused.")
     txt = st.text_area("Paste text", height=150)
     f = st.file_uploader("...or upload PDF, .txt, or screenshot", type=["pdf","txt","png","jpg","jpeg"])
     parts = []
@@ -251,22 +252,25 @@ def get_material():
             parts.append({"text": f.read().decode("utf-8", "ignore")})
         else:
             parts.append({"inline_data":{"mime_type":f.type,"data":base64.b64encode(f.read()).decode()}})
-    return parts
+    if parts and not topic.strip():
+        st.info("Add the topic above to unlock the buttons.")
+    return parts, topic.strip()
 
 def quiz_mode(level, subject):
-    parts = get_material()
+    parts, topic = get_material()
+    ready = bool(parts and topic)
     st.subheader("2. Quiz settings")
     qtype = st.radio("Type", ["Multiple choice","Open ended"], horizontal=True)
     n = st.slider("Questions", 3, 20, 5)
     mins = st.number_input("Time limit (minutes, 0 = none)", 0, 120, 0)
     style = st.checkbox("Past-paper style (original questions in exam format)")
-    if st.button("Generate quiz", type="primary", disabled=not parts):
+    if st.button("Generate quiz", type="primary", disabled=not ready):
         fmt = ('Each item: {"q":str,"options":[4 strings],"answer":index 0-3,"why":str}' if qtype=="Multiple choice"
                else 'Each item: {"q":str,"model_answer":str}')
         pool = STYLES * 2
         random.shuffle(pool)
         plan = "\n".join(f"{i+1}. {s}" for i, s in enumerate(pool[:n]))
-        prompt = {"text": f"You are writing {qtype} study questions for a {level} {subject} student. Stay focused on {subject} and use ONLY the material provided. "
+        prompt = {"text": f"You are writing {qtype} study questions for a {level} {subject} student. The material is about: {topic}. Stay focused on that topic within {subject} and use ONLY the material provided. "
                   f"Vary the questions: use these styles in order, one style per question:\n{plan}\n"
                   "Rules: ask about ideas, reasons, relationships and meaning, not just facts. Do NOT make most questions about statistics, numbers or dates; "
                   "use a number only when it is essential, and in at most one of every five questions. Never repeat the same question stem pattern. "
@@ -316,14 +320,15 @@ def quiz_mode(level, subject):
             save("quiz", subject, level, score, len(qz["items"]))
 
 def blurt_mode(level, subject):
-    parts = get_material()
+    parts, topic = get_material()
+    ready = bool(parts and topic)
     st.subheader("2. Blurt")
     st.caption("Read your material, then hide it and write everything you remember.")
     mins = st.number_input("Blurt time (minutes)", 1, 60, 5)
-    if st.button("Start blurt timer", disabled=not parts): timer(mins*60, "Blurt")
+    if st.button("Start blurt timer", disabled=not ready): timer(mins*60, "Blurt")
     recall = st.text_area("Write everything you remember", height=250)
-    if st.button("Grade my blurt", type="primary", disabled=not (parts and recall.strip())):
-        p = {"text": "Compare the student's recall to the source material. Return JSON: "
+    if st.button("Grade my blurt", type="primary", disabled=not (ready and recall.strip())):
+        p = {"text": f"The material is about: {topic} ({level} {subject}). Compare the student's recall to the source material. Return JSON: "
              '{"score":0-100,"covered":[str],"missed":[str],"wrong":[str]}.\nRECALL:\n' + recall}
         try:
             r = generate(parts + [p])
