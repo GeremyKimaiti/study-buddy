@@ -174,7 +174,7 @@ def quiz_mode(level, subject):
         prompt = {"text": f"Make {n} {qtype} study questions for a {level} {subject} student using ONLY the material provided. "
                   f"{'Write in the style of a standard exam. ' if style else ''}Do not copy copyrighted exam questions. "
                   f"Return a JSON list. {fmt}"}
-          try:
+              try:
             st.session_state["quiz"] = dict(
                 items=generate(parts + [prompt]),
                 type=qtype,
