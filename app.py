@@ -188,25 +188,42 @@ def save(kind, subject, level, score, total):
         st.warning(f"Could not save progress: {e}")
 
 def login():
-    st.sidebar.header("Account")
     if st.session_state.get("user"):
+        st.sidebar.header("Account")
         st.sidebar.success(st.session_state["email"])
         if st.sidebar.button("Log out"):
-            for k in ("user","token","email"): st.session_state.pop(k, None)
+            for k in ("user","token","email","guest"): st.session_state.pop(k, None)
             st.rerun()
         return
-    mode = st.sidebar.radio("Mode", ["Log in","Sign up"], horizontal=True)
-    em = st.sidebar.text_input("Email"); pw = st.sidebar.text_input("Password", type="password")
-    if st.sidebar.button(mode):
-        try:
-            c = sb()
-            res = c.auth.sign_up({"email":em,"password":pw}) if mode=="Sign up" else c.auth.sign_in_with_password({"email":em,"password":pw})
-            if res.session:
-                st.session_state.update(user=res.user.id, token=res.session.access_token, email=em); st.rerun()
-            else:
-                st.sidebar.info("Check your email to confirm, then log in.")
-        except Exception as e:
-            st.sidebar.error(str(e))
+    if st.session_state.get("guest"):
+        st.sidebar.header("Account")
+        st.sidebar.info("Guest mode: progress is not saved.")
+        if st.sidebar.button("Log in / Sign up"):
+            st.session_state["guest"] = False
+            st.rerun()
+        return
+    st.title("📚 Study Buddy")
+    st.caption("Log in to save your progress, or continue as a guest.")
+    left, mid, right = st.columns([1, 2, 1])
+    with mid:
+        mode = st.radio("Mode", ["Log in","Sign up"], horizontal=True)
+        em = st.text_input("Email")
+        pw = st.text_input("Password", type="password")
+        if st.button(mode, type="primary"):
+            try:
+                c = sb()
+                res = c.auth.sign_up({"email":em,"password":pw}) if mode=="Sign up" else c.auth.sign_in_with_password({"email":em,"password":pw})
+                if res.session:
+                    st.session_state.update(user=res.user.id, token=res.session.access_token, email=em); st.rerun()
+                else:
+                    st.info("Check your email to confirm, then log in.")
+            except Exception as e:
+                st.error(str(e))
+        st.divider()
+        if st.button("Continue as guest"):
+            st.session_state["guest"] = True
+            st.rerun()
+    st.stop()
 
 def get_material():
     st.subheader("1. Your material")
