@@ -80,9 +80,6 @@ def groq_generate(parts, json_out=True):
         ],
     }
 
-    if json_out:
-        body["response_format"] = {"type": "json_object"}
-
     response = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
         headers={
@@ -95,12 +92,15 @@ def groq_generate(parts, json_out=True):
 
     if not response.ok:
         raise RuntimeError(
-            f"Groq request failed ({response.status_code}). "
-            "Check your key, model access, and usage limits."
+            f"Groq request failed ({response.status_code}): {response.text[:300]}"
         )
 
     text = response.json()["choices"][0]["message"]["content"]
-    return json.loads(text)["result"] if json_out else text
+    if not json_out:
+        return text
+    start = text.find("{")
+    end = text.rfind("}")
+    return json.loads(text[start:end + 1])["result"]
 
 
 def generate(parts, json_out=True):
