@@ -239,24 +239,69 @@ def login():
 
 def get_material():
     st.subheader("1. Your material")
-    topic = st.text_input("What is this about?", placeholder="e.g. Causes of World War I, or Chapter 4: Photosynthesis", help="Telling the AI the topic keeps the questions focused.")
-    txt = st.text_area("Paste text", height=150)
-    f = st.file_uploader("...or upload PDF, .txt, or screenshot", type=["pdf","txt","png","jpg","jpeg"])
-    parts = []
+    topic = st.text_input("What is this about?", placeholder="e.g. Causes of World War I, or Art history identification", help="Telling the AI the topic keeps the questions focused. Write the word identification and upload artwork photos to practice identifying them.")
+    txt = st.text_area("Paste text (for identification: paste your list of artworks and answers)", height=150)
+    files = st.file_uploader("...or upload PDFs, .txt files, screenshots or photos", type=["pdf","txt","png","jpg","jpeg"], accept_multiple_files=True)
+    parts, images = [], []
     if txt.strip(): parts.append({"text": txt})
-    if f:
+    for f in files or []:
         if f.type == "application/pdf":
             parts.append({"text": "\n".join((p.extract_text() or "") for p in PdfReader(f).pages)})
         elif f.type == "text/plain":
-            parts.append({"text": f.read().decode("utf-8", "ignore")})
+            parts.append({"text": f.getvalue().decode("utf-8", "ignore")})
         else:
-            parts.append({"inline_data":{"mime_type":f.type,"data":base64.b64encode(f.read()).decode()}})
+            data = f.getvalue()
+            images.append((f.name, data, f.type))
+            parts.append({"inline_data":{"mime_type":f.type,"data":base64.b64encode(data).decode()}})
     if parts and not topic.strip():
         st.info("Add the topic above to unlock the buttons.")
-    return parts, topic.strip()
+    return parts, topic.strip(), images
+
+def id_mode(level, subject, parts, topic, images):
+    st.subheader("2. Identification")
+    st.caption("Look at each image and fill in all three boxes, then check your answers. Use Gemini as the AI provider for images.")
+    notes = [p for p in parts if "text" in p]
+    for i, (name, data, mime) in enumerate(images):
+        with st.container(border=True):
+            st.markdown(f"**Image {i+1}**")
+            st.image(data, width=520)
+            st.text_input("Artist / author", key=f"id_a{i}")
+            st.text_input("Name of the artwork / era / materials", key=f"id_w{i}")
+            st.text_area("Significance", key=f"id_s{i}", height=100)
+    if st.button("Check my answers", type="primary"):
+        gp = list(notes)
+        gp.append({"text": f"You are grading an art history identification test for a {level} {subject} student. Topic: {topic}. "
+                   "For each image, identify the artwork. If the pasted notes list it, trust the notes first. "
+                   "Then compare the student's three answers: artist, name of the artwork with era and materials, and significance. "
+                   "Mark a part ok=true if it is substantially correct. For the second part, the name or era must be right with nothing major wrong. "
+                   "Give a short correct answer for each part. If you are not sure what the artwork is, set unsure=true and say so in the correct text. "
+                   'Return a JSON list with one item per image in order: {"artist":{"ok":bool,"correct":str},"work":{"ok":bool,"correct":str},"significance":{"ok":bool,"correct":str},"unsure":bool}'})
+        for i, (name, data, mime) in enumerate(images):
+            gp.append({"text": f"Image {i+1}:"})
+            gp.append({"inline_data": {"mime_type": mime, "data": base64.b64encode(data).decode()}})
+            gp.append({"text": f"Student answers for image {i+1}. Artist: {st.session_state.get(f'id_a{i}', '')}. Artwork/era/materials: {st.session_state.get(f'id_w{i}', '')}. Significance: {st.session_state.get(f'id_s{i}', '')}"})
+        try:
+            res = generate(gp)
+            score = 0
+            for i, r in enumerate(res[:len(images)]):
+                st.markdown(f"**Image {i+1}**")
+                if r.get("unsure"): st.warning("The AI is not sure about this artwork. Check it against your notes.")
+                for label, key in (("Artist", "artist"), ("Artwork / era / materials", "work"), ("Significance", "significance")):
+                    item = r.get(key, {})
+                    ok = bool(item.get("ok"))
+                    score += ok
+                    (st.success if ok else st.error)(f"{label}: {item.get('correct', '')}")
+            total = 3 * len(images)
+            st.progress(score / total, text=f"Score {score}/{total}")
+            save("identification", subject, level, score, total)
+        except Exception as e:
+            st.error(f"Checking failed: {e}")
 
 def quiz_mode(level, subject):
-    parts, topic = get_material()
+    parts, topic, images = get_material()
+    if images and "identif" in topic.lower():
+        id_mode(level, subject, parts, topic, images)
+        return
     ready = bool(parts and topic)
     st.subheader("2. Quiz settings")
     qtype = st.radio("Type", ["Multiple choice","Open ended"], horizontal=True)
@@ -319,7 +364,7 @@ def quiz_mode(level, subject):
             save("quiz", subject, level, score, len(qz["items"]))
 
 def blurt_mode(level, subject):
-    parts, topic = get_material()
+    parts, topic, images = get_material()
     ready = bool(parts and topic)
     st.subheader("2. Blurt")
     st.caption("Read your material, then hide it and write everything you remember.")
