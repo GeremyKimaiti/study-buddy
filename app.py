@@ -32,53 +32,52 @@ STYLES = [
     "pick the one accurate statement among four",
 ]
 
-PALETTE = {
-    False: dict(bg="#FFFFFF", card="#F6F8FA", text="#1F2328", muted="#656D76", border="#D0D7DE", accent="#0969DA", accent2="#1F883D", soft="#EAEEF2"),
-    True: dict(bg="#0D1117", card="#161B22", text="#E6EDF3", muted="#8B949E", border="#30363D", accent="#2F81F7", accent2="#238636", soft="#21262D"),
-}
+P = dict(bg="#0a080c", card="#120e18", text="#f2eefa", muted="#a79fb8", border="#2e2540", accent="#c9a7f5", accent2="#b48cf2", soft="#1c1528")
 
 CSS = """
 <style>
-html, body, .stApp { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
-.stApp { background: var(--bg); }
-header[data-testid="stHeader"] { background: var(--bg); border-bottom: 1px solid var(--border); }
+html, body, .stApp { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+.stApp { background: radial-gradient(circle at 0% 0%, rgba(150,80,220,.35), transparent 32%), radial-gradient(circle at 100% 45%, rgba(150,80,220,.22), transparent 30%), radial-gradient(circle at 20% 100%, rgba(150,80,220,.18), transparent 30%), var(--bg); background-attachment: fixed; }
+header[data-testid="stHeader"] { background: transparent; }
 .block-container { padding-top: 2rem; max-width: 1012px; }
 [data-testid="stSidebar"] { background: var(--card); border-right: 1px solid var(--border); }
 .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp li, .stApp label, .stApp [data-testid="stMarkdownContainer"], .stApp [data-testid="stWidgetLabel"] p { color: var(--text); }
+.stApp h2, .stApp h3 { font-size: 0.9rem; font-weight: 400; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); }
 [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color: var(--muted); }
-div[data-baseweb="input"], div[data-baseweb="textarea"], div[data-baseweb="select"] > div { background: var(--bg); border-color: var(--border); border-radius: 6px; }
+div[data-baseweb="input"], div[data-baseweb="textarea"], div[data-baseweb="select"] > div { background: var(--bg); border-color: var(--border); border-radius: 8px; }
 .stTextInput input, .stTextArea textarea, .stNumberInput input { background: var(--bg); color: var(--text); }
 div[data-baseweb="popover"] > div, div[data-baseweb="popover"] ul { background: var(--card); }
 div[data-baseweb="popover"] li, div[data-baseweb="select"] div { color: var(--text); }
-.stButton > button, .stFormSubmitButton > button { border-radius: 6px; border: 1px solid var(--border); background: var(--card); font-weight: 600; font-size: 14px; transition: background .1s ease, border-color .1s ease; }
-.stButton > button:hover { background: var(--soft); border-color: var(--muted); }
-.stButton > button[kind="primary"], .stButton > button[data-testid="stBaseButton-primary"] { background: var(--accent2); border: 1px solid rgba(31,35,40,.15); }
+.stButton > button, .stFormSubmitButton > button { border-radius: 8px; border: 1px solid var(--border); background: var(--card); font-weight: 600; font-size: 14px; transition: background .15s ease, border-color .15s ease; }
+.stButton > button p { color: var(--text); }
+.stButton > button:hover { background: var(--soft); border-color: var(--accent); }
+.stButton > button[kind="primary"], .stButton > button[data-testid="stBaseButton-primary"] { background: var(--accent); border: 1px solid var(--accent); }
 .stButton > button[kind="primary"]:hover, .stButton > button[data-testid="stBaseButton-primary"]:hover { background: var(--accent2); filter: brightness(1.1); }
-.stButton > button[kind="primary"] p, .stButton > button[data-testid="stBaseButton-primary"] p { color: #fff; }
-[data-testid="stSidebar"] [role="radiogroup"] label { padding: 6px 10px; border-radius: 6px; transition: background .1s ease; }
+.stButton > button[kind="primary"] p, .stButton > button[data-testid="stBaseButton-primary"] p { color: #0a080c; }
+[data-testid="stSidebar"] [role="radiogroup"] label { padding: 6px 10px; border-radius: 8px; transition: background .15s ease; }
 [data-testid="stSidebar"] [role="radiogroup"] label:hover { background: var(--soft); }
-[data-testid="stMetric"] { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 14px 18px; }
+[data-testid="stMetric"] { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
 [data-testid="stMetricValue"], [data-testid="stMetricLabel"] { color: var(--text); }
-[data-testid="stFileUploaderDropzone"] { background: var(--card); border: 1px dashed var(--border); border-radius: 6px; }
+[data-testid="stFileUploaderDropzone"] { background: var(--card); border: 1px dashed var(--border); border-radius: 10px; }
 [data-testid="stFileUploaderDropzone"] span, [data-testid="stFileUploaderDropzone"] small { color: var(--text); }
-[data-testid="stVerticalBlockBorderWrapper"] { border-radius: 6px; border-color: var(--border); }
-[data-testid="stAlert"] { border-radius: 6px; }
-.stProgress > div > div > div > div { background: var(--accent2); }
-.stApp .hero { padding: 24px 28px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); margin-bottom: 20px; }
-.stApp .hero h1 { color: var(--text); margin: 0; font-size: 1.5rem; font-weight: 600; }
-.stApp .hero p { color: var(--muted); margin: 6px 0 0; }
-.stApp .hero .chip { display: inline-block; padding: 0 10px; line-height: 22px; border-radius: 2em; border: 1px solid var(--accent); color: var(--accent); font-size: 12px; font-weight: 500; margin: 12px 8px 0 0; }
+[data-testid="stVerticalBlockBorderWrapper"] { border-radius: 10px; border-color: var(--border); }
+[data-testid="stAlert"] { border-radius: 10px; }
+.stProgress > div > div > div > div { background: var(--accent); }
+.stApp .hero { padding: 28px 4px 20px; margin-bottom: 16px; }
+.stApp .hero .kicker { color: var(--accent); font-size: 1.1rem; font-weight: 300; letter-spacing: .05em; margin: 0 0 4px; }
+.stApp .hero h1 { color: var(--text); margin: 0; font-size: 2.6rem; font-weight: 300; letter-spacing: .04em; text-transform: uppercase; line-height: 1.1; }
+.stApp .hero p.sub { color: var(--muted); margin: 10px 0 0; }
+.stApp .hero .chip { display: inline-block; padding: 0 12px; line-height: 24px; border-radius: 2em; border: 1px solid var(--accent); color: var(--accent); font-size: 12px; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; margin: 14px 8px 0 0; }
 </style>
 """
 
 def apply_theme():
-    p = PALETTE[bool(st.session_state.get("dark"))]
-    root = ":root{" + "".join(f"--{k}:{v};" for k, v in p.items()) + "}"
+    root = ":root{" + "".join(f"--{k}:{v};" for k, v in P.items()) + "}"
     st.markdown(f"<style>{root}</style>" + CSS, unsafe_allow_html=True)
 
 def hero(title, sub, chips=()):
     chips_html = "".join(f"<span class='chip'>{c}</span>" for c in chips)
-    st.markdown(f"<div class='hero'><h1>{title}</h1><p>{sub}</p>{chips_html}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='hero'><p class='kicker'>Study Buddy</p><h1>{title}</h1><p class='sub'>{sub}</p>{chips_html}</div>", unsafe_allow_html=True)
 
 @st.cache_resource
 def sb():
@@ -175,11 +174,11 @@ def generate(parts, json_out=True, creative=False):
     return gemini(parts, json_out, creative)
 
 def timer(seconds, label):
-    p = PALETTE[bool(st.session_state.get("dark"))]
-    components.html(f"""<div style="font-family:-apple-system,'Segoe UI',Helvetica,sans-serif;text-align:center;color:{p['text']};background:{p['card']};border:1px solid {p['border']};border-radius:6px;padding:14px 10px">
-    <div style="font-size:12px;color:{p['muted']};letter-spacing:.08em;text-transform:uppercase">{label}</div>
-    <div id="t" style="font-size:44px;font-weight:600;color:{p['text']}"></div>
-    <div style="height:6px;background:{p['border']};border-radius:99px;overflow:hidden;margin-top:6px"><div id="b" style="height:100%;width:100%;background:{p['accent2']}"></div></div></div>
+    p = P
+    components.html(f"""<div style="font-family:-apple-system,'Segoe UI',Helvetica,sans-serif;text-align:center;color:{p['text']};background:{p['card']};border:1px solid {p['border']};border-radius:10px;padding:14px 10px">
+    <div style="font-size:12px;color:{p['accent']};letter-spacing:.25em;text-transform:uppercase">{label}</div>
+    <div id="t" style="font-size:44px;font-weight:300;color:{p['text']}"></div>
+    <div style="height:6px;background:{p['border']};border-radius:99px;overflow:hidden;margin-top:6px"><div id="b" style="height:100%;width:100%;background:{p['accent']}"></div></div></div>
     <script>const total={seconds};let s=total;const e=document.getElementById('t'),b=document.getElementById('b');
     const f=()=>{{e.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');b.style.width=(s/total*100)+'%';}};f();
     const i=setInterval(()=>{{s--;f();if(s<=0){{clearInterval(i);e.textContent="Time's up!";}}}},1000);</script>""", height=150)
@@ -358,7 +357,6 @@ def history():
     if rows: st.dataframe(rows, use_container_width=True)
     else: st.write("Nothing saved yet.")
 
-st.sidebar.toggle("🌙 Dark mode", key="dark")
 apply_theme()
 login()
 st.sidebar.selectbox(
