@@ -32,12 +32,12 @@ STYLES = [
     "pick the one accurate statement among four",
 ]
 
-P = dict(bg="#0a080c", card="#120e18", text="#f2eefa", muted="#a79fb8", border="#2e2540", accent="#c9a7f5", accent2="#b48cf2", soft="#1c1528")
+P = dict(bg="#000000", card="#0d0d0d", text="#ffffff", muted="#a3a3a3", border="#333333", accent="#ffffff", accent2="#d4d4d4", soft="#1a1a1a")
 
 CSS = """
 <style>
-html, body, .stApp { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-.stApp { background: radial-gradient(circle at 0% 0%, rgba(150,80,220,.35), transparent 32%), radial-gradient(circle at 100% 45%, rgba(150,80,220,.22), transparent 30%), radial-gradient(circle at 20% 100%, rgba(150,80,220,.18), transparent 30%), var(--bg); background-attachment: fixed; }
+html, body, .stApp { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; accent-color: #ffffff; }
+.stApp { background: var(--bg); }
 header[data-testid="stHeader"] { background: transparent; }
 .block-container { padding-top: 2rem; max-width: 1012px; }
 [data-testid="stSidebar"] { background: var(--card); border-right: 1px solid var(--border); }
@@ -53,7 +53,7 @@ div[data-baseweb="popover"] li, div[data-baseweb="select"] div { color: var(--te
 .stButton > button:hover { background: var(--soft); border-color: var(--accent); }
 .stButton > button[kind="primary"], .stButton > button[data-testid="stBaseButton-primary"] { background: var(--accent); border: 1px solid var(--accent); }
 .stButton > button[kind="primary"]:hover, .stButton > button[data-testid="stBaseButton-primary"]:hover { background: var(--accent2); filter: brightness(1.1); }
-.stButton > button[kind="primary"] p, .stButton > button[data-testid="stBaseButton-primary"] p { color: #0a080c; }
+.stButton > button[kind="primary"] p, .stButton > button[data-testid="stBaseButton-primary"] p { color: #000000; }
 [data-testid="stSidebar"] [role="radiogroup"] label { padding: 6px 10px; border-radius: 8px; transition: background .15s ease; }
 [data-testid="stSidebar"] [role="radiogroup"] label:hover { background: var(--soft); }
 [data-testid="stMetric"] { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
@@ -61,7 +61,7 @@ div[data-baseweb="popover"] li, div[data-baseweb="select"] div { color: var(--te
 [data-testid="stFileUploaderDropzone"] { background: var(--card); border: 1px dashed var(--border); border-radius: 10px; }
 [data-testid="stFileUploaderDropzone"] span, [data-testid="stFileUploaderDropzone"] small { color: var(--text); }
 [data-testid="stVerticalBlockBorderWrapper"] { border-radius: 10px; border-color: var(--border); }
-[data-testid="stAlert"] { border-radius: 10px; }
+[data-testid="stAlert"] { border-radius: 10px; filter: grayscale(1); }
 .stProgress > div > div > div > div { background: var(--accent); }
 .stApp .hero { padding: 28px 4px 20px; margin-bottom: 16px; }
 .stApp .hero .kicker { color: var(--accent); font-size: 1.1rem; font-weight: 300; letter-spacing: .05em; margin: 0 0 4px; }
